@@ -5,7 +5,9 @@ import android.graphics.Point;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -40,12 +42,19 @@ public class MainActivity extends AppCompatActivity {
     private int blackX;
     private int blackY;
 
+    // Скорость
+    private int boxSpeed;
+    private int orangeSpeed;
+    private int pinkSpeed;
+    private int blackSpeed;
+
     //Счёт
     private int score = 0;
 
     //Инициализируем классы
     private Handler handler = new Handler();
     private Timer timer = new Timer();
+    private SoundPlayer sound;
 
     //Проверка статуса
     private boolean action_flg = false;
@@ -55,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sound = new SoundPlayer(this);
 
         scoreLabel = (TextView) findViewById(R.id.scoreLabel);
         startLabel = (TextView) findViewById(R.id.startLabel);
@@ -72,6 +83,18 @@ public class MainActivity extends AppCompatActivity {
         screenWidth = size.x;
         screenHeight = size.y;
 
+        //Nexus4 width: 768 height: 1184
+        //Speed box: 20 orange: 12 pink: 20 black 16
+        boxSpeed = Math.round(screenHeight / 60F); // 1184 / 60 = 19.733... => 20
+        orangeSpeed = Math.round(screenWidth / 60F); // 768 / 60 = 12.8... => 13
+        pinkSpeed = Math.round(screenWidth / 36F); // 768 / 36 = 21.333... => 21
+        blackSpeed = Math.round(screenWidth / 45F); // 768 / 45 = 17.06... => 17
+
+        Log.v("SPEED_BOX",  boxSpeed+"");
+        Log.v("SPEED_ORANGE",  orangeSpeed+"");
+        Log.v("SPEED_PINK",  pinkSpeed+"");
+        Log.v("SPEED_BLACK",  blackSpeed+"");
+
         //Переместиться за пределы экрана
         orange.setX(-80);
         orange.setY(-80);
@@ -80,14 +103,14 @@ public class MainActivity extends AppCompatActivity {
         black.setX(-80);
         black.setY(-80);
 
-        scoreLabel.setText("Score: + 0");
+        scoreLabel.setText("Score: 0");
     }
 
     public void changePos() {
 
         hitCheck();
         // Orange
-        orangeX -= 12;
+        orangeX -= orangeSpeed;
         if (orangeX < 0){
             orangeX = screenWidth +20;
             orangeY = (int) Math.floor(Math.random() * (frameHeight - orange.getHeight()));
@@ -96,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         orange.setY(orangeY);
 
         //Black
-        blackX -= 16;
+        blackX -= blackSpeed;
         if (blackX < 0) {
             blackX = screenWidth + 10;
             blackY = (int) Math.floor(Math.random() * (frameHeight - black.getHeight()));
@@ -106,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         black.setY(blackY);
 
         //Pink
-        pinkX -= 20;
+        pinkX -= pinkSpeed;
         if (pinkX < 0){
             pinkX = screenWidth +5000;
             pinkY = (int) Math.floor(Math.random() * (frameHeight - pink.getHeight()));
@@ -118,10 +141,10 @@ public class MainActivity extends AppCompatActivity {
         //Перемещение box
         if (action_flg == true){
             //Touching
-            boxY -= 20;
+            boxY -= boxSpeed;
         } else  {
             //Releasing
-            boxY += 20;
+            boxY += boxSpeed;
         }
 
         //Проверка позиции box
@@ -147,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 boxY <= orangeCenterY && orangeCenterY <= boxY + boxSize){
             score += 10;
             orangeX = -10;
+            sound.playHitSound();
         }
 
         //Pink
@@ -157,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
                 boxY <= pinkCenterY && pinkCenterY <= boxY + boxSize){
             score += 30;
             pinkX = -10;
+            sound.playHitSound();
         }
 
         //Black
@@ -167,6 +192,8 @@ public class MainActivity extends AppCompatActivity {
                 boxY <= blackCenterY && blackCenterY <= boxY + boxSize){
             timer.cancel();
             timer = null;
+
+            sound.playOverSound();
 
             //Результат!!!
             Intent intent = new Intent(getApplicationContext(), result.class);
@@ -213,5 +240,17 @@ public class MainActivity extends AppCompatActivity {
 
 
         return true;
+    }
+
+    //Кнопка "назад" остановлена
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event){
+        if (event.getAction() == KeyEvent.ACTION_DOWN){
+            switch (event.getKeyCode()){
+                case KeyEvent.KEYCODE_BACK:
+                    return true;
+            }
+        }
+        return super.dispatchKeyEvent(event);
     }
 }
