@@ -1,18 +1,19 @@
 package com.example.catchtheball;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 public class all_results extends AppCompatActivity {
 
     TextView tv_score;
 
-    int lastScore;
-    int best1, best2, best3, best4, best5;
+
+    int score, highScore;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,63 +23,66 @@ public class all_results extends AppCompatActivity {
 
         tv_score = (TextView) findViewById(R.id.tv_score);
 
-        SharedPreferences preferences = getSharedPreferences("PREFS", 0);
-        lastScore = preferences.getInt("lastScore", 0);
-        best1 = preferences.getInt("best1,", 0);
-        best2 = preferences.getInt("best2,", 0);
-        best3 = preferences.getInt("best3,", 0);
-        best4 = preferences.getInt("best4,", 0);
-        best5 = preferences.getInt("best5,", 0);
+        score = getIntent().getIntExtra("SCORE", 0);
 
-        if (lastScore > best5){
-            best5 = lastScore;
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putInt("best5", best5);
-            editor.apply();
+
+        SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
+        highScore = settings.getInt("HIGH_SCORE", 0);
+
+        int best2 = settings.getInt("BEST2", 0);
+        int best3 = settings.getInt("BEST3", 0);
+        int best4 = settings.getInt("BEST4", 0);
+        int best5 = settings.getInt("BEST5", 0);
+
+        if (score > best5) {
+            best5 = score;
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("BEST5", best5);
+            editor.commit();
         }
 
-        if (lastScore > best4){
+        if (score > best4) {
             int temp = best4;
-            best4 = lastScore;
+            best4 = score;
             best5 = temp;
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putInt("best5", best5);
-            editor.putInt("best4", best4);
-            editor.apply();
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("BEST5", best5);
+            editor.putInt("BEST4", best4);
+            editor.commit();
         }
 
-        if (lastScore > best3){
+        if (score > best3) {
             int temp = best3;
-            best3 = lastScore;
+            best3 = score;
             best4 = temp;
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putInt("best4", best4);
-            editor.putInt("best3", best3);
-            editor.apply();
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("BEST4", best4);
+            editor.putInt("BEST3", best3);
+            editor.commit();
         }
 
-        if (lastScore > best2){
+        if (score > best2) {
             int temp = best2;
-            best2 = lastScore;
+            best2 = score;
             best3 = temp;
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putInt("best3", best3);
-            editor.putInt("best2", best2);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("BEST3", best3);
+            editor.putInt("BEST2", best2);
             editor.apply();
         }
 
-        if (lastScore > best1){
-            int temp = best1;
-            best1 = lastScore;
+        if (score > highScore) {
+            int temp = highScore;
+            highScore = score;
             best2 = temp;
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putInt("best2", best2);
-            editor.putInt("best1", best1);
-            editor.apply();
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("BEST2", best2);
+            editor.putInt("HIGH_SCORE", highScore);
+            editor.commit();
         }
 
 
-        tv_score.setText("BEST1: " + best1 + "\n" +
+        tv_score.setText("BEST1: " + highScore + "\n" +
                 "BEST2: " + best2 + "\n" +
                 "BEST3: " + best3 + "\n" +
                 "BEST4: " + best4 + "\n" +
@@ -88,8 +92,12 @@ public class all_results extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.commit();
+
         Intent intent = new Intent(getApplicationContext(), result.class);
+        intent.putExtra("SCORE", score);
         startActivity(intent);
-        finish();
     }
 }
