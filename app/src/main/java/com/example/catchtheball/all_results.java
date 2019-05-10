@@ -12,7 +12,7 @@ public class all_results extends AppCompatActivity {
     TextView first, second, third, fourth, fifth;
 
 
-    int score, highScore;
+    int score;
 
 
     @Override
@@ -27,10 +27,10 @@ public class all_results extends AppCompatActivity {
         fifth = (TextView) findViewById(R.id.fifth);
 
         SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
-        highScore = settings.getInt("HIGH_SCORE", 0);
         score = getIntent().getIntExtra("SCORE", 0);
         SharedPreferences.Editor editor = settings.edit();
 
+        int best1 = settings.getInt("BEST1", 0);
         int best2 = settings.getInt("BEST2", 0);
         int best3 = settings.getInt("BEST3", 0);
         int best4 = settings.getInt("BEST4", 0);
@@ -70,17 +70,17 @@ public class all_results extends AppCompatActivity {
             editor.apply();
         }
 
-        if (score > highScore) {
-            int temp = highScore;
-            highScore = score;
+        if (score > best1) {
+            int temp = best1;
+            best1 = score;
             best2 = temp;
             editor.putInt("BEST2", best2);
-            editor.putInt("HIGH_SCORE", highScore);
+            editor.putInt("BEST1", best1);
             editor.apply();
         }
 
 
-        first.setText(highScore + "");
+        first.setText(best1 + "");
         second.setText(best2 + "");
         third.setText(best3 + "");
         fourth.setText(best4 + "");

@@ -20,12 +20,10 @@ public class result extends AppCompatActivity {
         setContentView(R.layout.activity_result);
 
         TextView scoreLabel = (TextView) findViewById(R.id.scoreLabel);
-        TextView highScoreLabel = (TextView) findViewById(R.id.highScoreLabel);
 
         SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         lastScore = settings.getInt("LAST_SCORE", 0);
-        highScore = settings.getInt("HIGH_SCORE", 0);
         score = getIntent().getIntExtra("SCORE", 0);
 
 
@@ -36,18 +34,6 @@ public class result extends AppCompatActivity {
         } else {
             scoreLabel.setText(lastScore + "");
         }
-
-
-            if (score > highScore){
-            highScoreLabel.setText("High Score: " + score);
-
-            //Обновление "Лучшего результата"
-            editor.putInt("HIGH_SCORE", score);
-                editor.apply();
-        } else {
-            highScoreLabel.setText("High Score: " + highScore);
-        }
-
     }
 
     public void tryAgain(View view){
