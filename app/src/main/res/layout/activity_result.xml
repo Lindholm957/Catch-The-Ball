@@ -7,12 +7,12 @@
     tools:context=".result"
     android:orientation="vertical"
     android:gravity="center">
-    
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="GAME OVER"
-        android:textSize="30sp"/>
+        android:textSize="30sp" />
     <TextView
         android:id="@+id/scoreLabel"
         android:layout_width="wrap_content"

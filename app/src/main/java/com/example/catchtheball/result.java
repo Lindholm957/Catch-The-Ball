@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 public class result extends AppCompatActivity {
 
-    int highScore, score;
+    int highScore, score, lastScore;
 
 
     @Override
@@ -22,25 +22,32 @@ public class result extends AppCompatActivity {
         TextView scoreLabel = (TextView) findViewById(R.id.scoreLabel);
         TextView highScoreLabel = (TextView) findViewById(R.id.highScoreLabel);
 
-
-        score = getIntent().getIntExtra("SCORE", 0);
-        scoreLabel.setText(score + "");
-
-
-
         SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        lastScore = settings.getInt("LAST_SCORE", 0);
         highScore = settings.getInt("HIGH_SCORE", 0);
+        score = getIntent().getIntExtra("SCORE", 0);
 
-        if (score > highScore){
+
+        if (score > 0){
+            editor.putInt("LAST_SCORE", score);
+            editor.apply();
+            scoreLabel.setText(score + "");
+        } else {
+            scoreLabel.setText(lastScore + "");
+        }
+
+
+            if (score > highScore){
             highScoreLabel.setText("High Score: " + score);
 
             //Обновление "Лучшего результата"
-            SharedPreferences.Editor editor = settings.edit();
             editor.putInt("HIGH_SCORE", score);
-            editor.commit();
+                editor.apply();
         } else {
             highScoreLabel.setText("High Score: " + highScore);
         }
+
     }
 
     public void tryAgain(View view){
@@ -49,6 +56,7 @@ public class result extends AppCompatActivity {
 
     public void all_results(View view){
         Intent intent = new Intent(getApplicationContext(), all_results.class);
+        intent.putExtra("SCORE", score);
         startActivity(intent);
     }
 
