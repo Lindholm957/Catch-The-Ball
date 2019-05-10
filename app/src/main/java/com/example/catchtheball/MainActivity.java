@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
             sound.playOverSound();
 
             //Результат!!!
-            Intent intent = new Intent(getApplicationContext(), result.class);
+            Intent intent = new Intent(getApplicationContext(), Result.class);
             intent.putExtra("SCORE", score);
             startActivity(intent);
         }

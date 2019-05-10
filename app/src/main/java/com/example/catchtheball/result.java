@@ -9,7 +9,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
-public class result extends AppCompatActivity {
+public class Result extends AppCompatActivity {
 
     int highScore, score, lastScore;
 
@@ -41,7 +41,7 @@ public class result extends AppCompatActivity {
     }
 
     public void all_results(View view){
-        Intent intent = new Intent(getApplicationContext(), all_results.class);
+        Intent intent = new Intent(getApplicationContext(), AllResults.class);
         intent.putExtra("SCORE", score);
         startActivity(intent);
     }
