@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 public class Result extends AppCompatActivity {
 
-    int highScore, score, lastScore;
+    int score, lastScore;
 
 
     @Override
@@ -40,7 +40,7 @@ public class Result extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 
-    public void all_results(View view){
+    public void allResults(View view){
         Intent intent = new Intent(getApplicationContext(), AllResults.class);
         intent.putExtra("SCORE", score);
         startActivity(intent);
