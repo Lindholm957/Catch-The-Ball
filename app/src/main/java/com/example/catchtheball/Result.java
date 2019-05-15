@@ -23,18 +23,21 @@ public class Result extends AppCompatActivity {
 
 
         int score = getIntent().getIntExtra("SCORE", 0);
-        scoreLabel.setText(score + "");
-
 
         SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
-        int highScore = settings.getInt("HIGH_SCORE", 0);
+        int lastScore = settings.getInt("LAST_SCORE", 0);
 
+        if (lastScore > 0){
+            scoreLabel.setText(score + "");
+        } else {
+            scoreLabel.setText(lastScore + "");
+        }
     }
         public void tryAgain (View view){
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
-        public void all_results (View view){
+        public void allResults (View view){
             startActivity(new Intent(getApplicationContext(), AllResults.class));
         }
 
