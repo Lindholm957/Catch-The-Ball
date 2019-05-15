@@ -1,6 +1,8 @@
 package com.example.catchtheball;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -196,7 +198,14 @@ public class MainActivity extends AppCompatActivity {
             sound.playOverSound();
 
             //Результат!!!
-            Intent intent = new Intent(getApplicationContext(), result.class);
+            SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = settings.edit();
+
+            int lastScore = settings.getInt("LAST_SCORE", 0);
+            editor.putInt("LAST_SCORE", score);
+            editor.apply();
+
+            Intent intent = new Intent(getApplicationContext(), Result.class);
             intent.putExtra("SCORE", score);
             startActivity(intent);
         }

@@ -4,28 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".result"
+    tools:context=".Result"
     android:orientation="vertical"
     android:gravity="center">
-    
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="GAME OVER"
-        android:textSize="30sp"/>
+        android:textSize="30sp" />
     <TextView
         android:id="@+id/scoreLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="150"
+        android:text=""
         android:textSize="40sp"/>
-    <TextView
-        android:id="@+id/highScoreLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="High Score: 300"
-        android:textSize="20sp"
-        android:layout_marginTop="80dp"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -42,6 +35,6 @@
         android:layout_marginTop="50dp"
         android:text="Best results"
         android:textAllCaps="false"
-        android:onClick="all_results"/>
+        android:onClick="allResults"/>
 
 </LinearLayout>

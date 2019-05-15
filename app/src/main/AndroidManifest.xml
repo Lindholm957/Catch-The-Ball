@@ -9,10 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".all_results"
+        <activity android:name=".AllResults"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".start"
+            android:name=".Start"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".result"
+            android:name=".Result"
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"

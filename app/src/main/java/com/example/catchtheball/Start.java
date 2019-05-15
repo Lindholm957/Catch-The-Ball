@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 
-public class start extends AppCompatActivity {
+public class Start extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
