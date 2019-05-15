@@ -19,19 +19,70 @@ public class Result extends AppCompatActivity {
         setContentView(R.layout.activity_result);
 
         TextView scoreLabel = (TextView) findViewById(R.id.scoreLabel);
-        TextView best_results = (Button) findViewById(R.id.best_results);
 
 
         int score = getIntent().getIntExtra("SCORE", 0);
 
         SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
-        int lastScore = settings.getInt("LAST_SCORE", 0);
 
-        if (lastScore > 0){
+        if (score > 0){
             scoreLabel.setText(score + "");
         } else {
+            int lastScore = settings.getInt("LAST_SCORE", 0);
             scoreLabel.setText(lastScore + "");
         }
+
+        SharedPreferences.Editor editor = settings.edit();
+
+        int best1 = settings.getInt("BEST1", 0);
+        int best2 = settings.getInt("BEST2", 0);
+        int best3 = settings.getInt("BEST3", 0);
+        int best4 = settings.getInt("BEST4", 0);
+        int best5 = settings.getInt("BEST5", 0);
+
+
+        if (score > best5) {
+            best5 = score;
+            editor.putInt("BEST5", best5);
+            editor.apply();
+        }
+
+        if (score > best4) {
+            int temp = best4;
+            best4 = score;
+            best5 = temp;
+            editor.putInt("BEST5", best5);
+            editor.putInt("BEST4", best4);
+            editor.apply();
+        }
+
+        if (score > best3) {
+            int temp = best3;
+            best3 = score;
+            best4 = temp;
+            editor.putInt("BEST4", best4);
+            editor.putInt("BEST3", best3);
+            editor.apply();
+        }
+
+        if (score > best2) {
+            int temp = best2;
+            best2 = score;
+            best3 = temp;
+            editor.putInt("BEST3", best3);
+            editor.putInt("BEST2", best2);
+            editor.apply();
+        }
+
+        if (score > best1) {
+            int temp = best1;
+            best1 = score;
+            best2 = temp;
+            editor.putInt("BEST2", best2);
+            editor.putInt("BEST1", best1);
+            editor.apply();
+        }
+
     }
         public void tryAgain (View view){
             startActivity(new Intent(getApplicationContext(), MainActivity.class));

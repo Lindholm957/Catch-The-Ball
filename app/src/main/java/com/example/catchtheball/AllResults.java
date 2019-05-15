@@ -27,8 +27,6 @@ public class AllResults extends AppCompatActivity {
         fifth = (TextView) findViewById(R.id.fifth);
 
         SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
-        score = getIntent().getIntExtra("SCORE", 0);
-        SharedPreferences.Editor editor = settings.edit();
 
         int best1 = settings.getInt("BEST1", 0);
         int best2 = settings.getInt("BEST2", 0);
