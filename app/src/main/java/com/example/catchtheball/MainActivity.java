@@ -1,8 +1,10 @@
 package com.example.catchtheball;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Point;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -17,10 +19,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.lang.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
+
+    DBHelper dbHelper;
 
     private TextView scoreLabel;
     private TextView startLabel;
@@ -52,6 +57,14 @@ public class MainActivity extends AppCompatActivity {
 
     //Счёт
     private int score = 0;
+    private long startTime = 0;
+    private long stopTime = 0;
+    private long time;
+    private boolean running = false;
+    private int oranges_get = 0;
+    private int pinks_get = 0;
+    private long touches = 0;
+
 
     //Инициализируем классы
     private Handler handler = new Handler();
@@ -75,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
         orange = (ImageView) findViewById(R.id.orange);
         pink = (ImageView) findViewById(R.id.pink);
         black = (ImageView) findViewById(R.id.black);
+
+        dbHelper = new DBHelper(this);
 
         //Получаем размер экрана
         WindowManager wm = getWindowManager();
@@ -172,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
                 boxY <= orangeCenterY && orangeCenterY <= boxY + boxSize){
             score += 10;
             orangeX = -10;
+            oranges_get++;
             sound.playHitSound();
         }
 
@@ -183,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
                 boxY <= pinkCenterY && pinkCenterY <= boxY + boxSize){
             score += 30;
             pinkX = -10;
+            pinks_get++;
             sound.playHitSound();
         }
 
@@ -194,10 +211,22 @@ public class MainActivity extends AppCompatActivity {
                 boxY <= blackCenterY && blackCenterY <= boxY + boxSize){
             timer.cancel();
             timer = null;
+            stop();
 
             sound.playOverSound();
 
+            time = getElapsedTimeSecs();
             //Результат!!!
+            SQLiteDatabase database = dbHelper.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(DBHelper.KEY_SCORE, score);
+            contentValues.put(DBHelper.KEY_TIME, time);
+            contentValues.put(DBHelper.KEY_ORANGE, oranges_get);
+            contentValues.put(DBHelper.KEY_PINK, pinks_get);
+            contentValues.put(DBHelper.KEY_TOUCHES, touches);
+            database.insert(DBHelper.TABLE_SESSIONS, null, contentValues);
+
             SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = settings.edit();
 
@@ -211,9 +240,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     public boolean onTouchEvent(MotionEvent me){
 
+
         if(start_flg == false){
+
+            start();
 
             start_flg = true;
 
@@ -241,6 +274,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             if (me.getAction() == MotionEvent.ACTION_DOWN){
                 action_flg = true;
+                touches++;
 
             } else if (me.getAction() == MotionEvent.ACTION_UP){
                 action_flg = false;
@@ -249,6 +283,27 @@ public class MainActivity extends AppCompatActivity {
 
 
         return true;
+    }
+
+    public void start() {
+        this.startTime = System.currentTimeMillis();
+        this.running = true;
+    }
+
+    public void stop() {
+        this.stopTime = System.currentTimeMillis();
+        this.running = false;
+    }
+
+    //elaspsed time in seconds
+    public long getElapsedTimeSecs() {
+        long elapsed;
+        if (running) {
+            elapsed = ((System.currentTimeMillis() - startTime) / 1000);
+        } else {
+            elapsed = ((stopTime - startTime) / 1000);
+        }
+        return elapsed;
     }
 
     //Кнопка "назад" остановлена
