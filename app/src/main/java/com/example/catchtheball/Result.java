@@ -23,7 +23,6 @@ public class Result extends AppCompatActivity {
         int score = getIntent().getIntExtra("SCORE", 0);
 
         SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
-
         if (score > 0){
             scoreLabel.setText(score + "");
         } else {

@@ -33,7 +33,6 @@ public class LastResults extends Activity {
         int[][] array = new int[rows][6];
 
         if (cursor.moveToFirst()) {
-            do {
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < 6; j++) {
                     if (j == 0) {
@@ -54,10 +53,10 @@ public class LastResults extends Activity {
                     } else if (j == 5) {
                         int number = cursor.getColumnIndex(DBHelper.KEY_TOUCHES);
                         array[i][j] = cursor.getInt(number);
+                        cursor.moveToNext();
                     }
                 }
             }
-            } while (cursor.moveToNext());
         }
 
         cursor.close();
