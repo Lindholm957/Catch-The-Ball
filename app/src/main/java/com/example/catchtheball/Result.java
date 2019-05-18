@@ -91,6 +91,10 @@ public class Result extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), AllResults.class));
         }
 
+        public void lastResults (View view){
+            startActivity(new Intent(getApplicationContext(), LastResults.class));
+        }
+
 
         //Кнопка "назад" остановлена
         @Override

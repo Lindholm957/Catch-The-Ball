@@ -36,5 +36,13 @@
         android:text="Best results"
         android:textAllCaps="false"
         android:onClick="allResults"/>
+    <Button
+    android:id="@+id/last_results"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="50dp"
+    android:text="Results"
+    android:textAllCaps="false"
+    android:onClick="lastResults"/>
 
 </LinearLayout>

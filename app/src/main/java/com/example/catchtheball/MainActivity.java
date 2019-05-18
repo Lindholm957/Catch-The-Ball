@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean running = false;
     private int oranges_get = 0;
     private int pinks_get = 0;
-    private long touches = 0;
+    private int touches = 0;
 
 
     //Инициализируем классы
@@ -217,15 +217,8 @@ public class MainActivity extends AppCompatActivity {
 
             time = getElapsedTimeSecs();
             //Результат!!!
-            SQLiteDatabase database = dbHelper.getWritableDatabase();
-            ContentValues contentValues = new ContentValues();
 
-            contentValues.put(DBHelper.KEY_SCORE, score);
-            contentValues.put(DBHelper.KEY_TIME, time);
-            contentValues.put(DBHelper.KEY_ORANGE, oranges_get);
-            contentValues.put(DBHelper.KEY_PINK, pinks_get);
-            contentValues.put(DBHelper.KEY_TOUCHES, touches);
-            database.insert(DBHelper.TABLE_SESSIONS, null, contentValues);
+            addSession();
 
             SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = settings.edit();
@@ -316,5 +309,24 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.dispatchKeyEvent(event);
+    }
+
+    public void addSession(){
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        String str_score = String.valueOf(score);
+        String str_time = String.valueOf(time);
+        String str_orange = String.valueOf(oranges_get);
+        String str_pink = String.valueOf(pinks_get);
+        String str_touches = String.valueOf(touches);
+
+        contentValues.put(DBHelper.KEY_SCORE, str_score);
+        contentValues.put(DBHelper.KEY_TIME, str_time);
+        contentValues.put(DBHelper.KEY_ORANGE, str_orange);
+        contentValues.put(DBHelper.KEY_PINK, str_pink);
+        contentValues.put(DBHelper.KEY_TOUCHES, str_touches);
+
+        database.insert(DBHelper.TABLE_SESSIONS, null, contentValues);
+        database.close();
     }
 }

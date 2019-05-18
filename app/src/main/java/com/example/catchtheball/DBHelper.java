@@ -23,8 +23,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + TABLE_SESSIONS + "(" + KEY_ID + "integer primary key," + KEY_SCORE + " longint,"
-            + KEY_TIME + " time," + KEY_ORANGE + " integer," + KEY_PINK + " integer," + KEY_TOUCHES + "integer" + ")");
+        String CREATE_SESSIONS_TABLE = "CREATE TABLE " + TABLE_SESSIONS + "("
+                + KEY_ID + " INTEGER PRIMARY KEY,"
+                + KEY_SCORE + " INT,"
+                + KEY_TIME + " INT,"
+                + KEY_ORANGE + " INTEGER,"
+                + KEY_PINK + " INTEGER,"
+                + KEY_TOUCHES + " INTEGER" + ")";
+        db.execSQL(CREATE_SESSIONS_TABLE);
     }
 
     @Override
