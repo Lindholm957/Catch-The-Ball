@@ -19,7 +19,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.lang.*;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -218,7 +223,9 @@ public class MainActivity extends AppCompatActivity {
             time = getElapsedTimeSecs();
             //Результат!!!
 
+            SendToBackend s = new SendToBackend(score, time, oranges_get, pinks_get, touches);
             addSession();
+
 
             SharedPreferences settings = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = settings.edit();
