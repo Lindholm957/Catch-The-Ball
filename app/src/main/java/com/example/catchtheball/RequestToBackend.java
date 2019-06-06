@@ -2,22 +2,19 @@ package com.example.catchtheball;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 
 
@@ -105,6 +102,9 @@ public class RequestToBackend {
 
             return POST(urls[0], stats);
         }
+        @Override
+        protected void onPostExecute(String result) {
 
+        }
     }
 }
