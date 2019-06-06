@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
             time = getElapsedTimeSecs();
             //Результат!!!
 
-            SendToBackend s = new SendToBackend(score, time, oranges_get, pinks_get, touches);
+            RequestToBackend r = new RequestToBackend();
             addSession();
 
 
@@ -336,4 +336,37 @@ public class MainActivity extends AppCompatActivity {
         database.insert(DBHelper.TABLE_SESSIONS, null, contentValues);
         database.close();
     }
+
+    String str_score = String.valueOf(score);
+    String str_time = String.valueOf(time);
+    String str_orange = String.valueOf(oranges_get);
+    String str_pink = String.valueOf(pinks_get);
+    String str_touches = String.valueOf(touches);
+
+    public String getScore()
+    {
+        return str_score;
+    }
+
+    public String getTime()
+    {
+        return str_time;
+    }
+
+    public String getOrange()
+    {
+        return str_orange;
+    }
+
+    public String getPink()
+    {
+        return str_pink;
+    }
+
+    public String getTouches()
+    {
+        return str_touches;
+    }
+
+
 }
